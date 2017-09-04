@@ -1,5 +1,11 @@
 import unittest
+from unittest.mock import patch
+
+from io import StringIO
+
 from calc_area import calc_area
+from calc_area import str_to_float
+from calc_area import main
 
 class Test_calcarea(unittest.TestCase):
     def test_int_value(self):
@@ -28,4 +34,20 @@ class Test_calcarea(unittest.TestCase):
 
     def test_type_float(self):
         self.assertTrue(type(calc_area(10.0)) == int)
+
+    def test_str_to_float_type(self):
+        self.assertTrue(type(str_to_float('10')) == float)
+        self.assertTrue(type(str_to_float('10.0')) == float)
+
+    def test_str_to_float_number(self):
+        self.assertEqual(str_to_float('10'), 10.0)
+        self.assertEqual(str_to_float('10.0'), 10.0)
+
+    def mock_print(self, _in, _out, callback):
+        with patch('sys.stdin', StringIO(_in)), patch('sys.stdout', new_callable=StringIO) as mocked_out:
+            callback()
+            self.assertEqual(mocked_out.getvalue(), _out)
+    
+    def test_mock_print(self):
+        self.mock_print('12\n', '314\n', main)
 
