@@ -1,3 +1,4 @@
+import sys
 import re
 
 def validate_addr_spec(addr):
@@ -58,5 +59,10 @@ def check_quoted_string(text):
     
     return True
 
+def main():
+    for line in sys.stdin:
+        line = line.rstrip('\r\n')
+        print(validate_addr_spec(line))
+
 if __name__ == '__main__':
-    validate_addr_spec('abc@example.com')
+    main()
