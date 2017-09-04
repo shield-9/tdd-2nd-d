@@ -25,7 +25,7 @@ class TestAddr(unittest.TestCase):
         self.assertEqual(validate_addr_spec('abc@example)com'), 'ng')
         self.assertEqual(validate_addr_spec('abc@example[com'), 'ng')
         self.assertEqual(validate_addr_spec('abc@example]com'), 'ng')
-        # self.assertEqual(validate_addr_spec('abc@example@com'), 'ng')
+        self.assertEqual(validate_addr_spec('abc@example@com'), 'ng')
         self.assertEqual(validate_addr_spec('abc@example:com'), 'ng')
         self.assertEqual(validate_addr_spec('abc@example;com'), 'ng')
         self.assertEqual(validate_addr_spec('abc@example<com'), 'ng')
@@ -66,4 +66,11 @@ class TestAddr(unittest.TestCase):
 
     def test_quoted_none(self):
         self.assertEqual(validate_addr_spec('"@example.com'), 'ng')
+
+    def test_empty_wrapped_by_quates(self):
+        self.assertEqual(validate_addr_spec('""@example.com'), 'ok')
+
+    def test_quated_string_allowed_chars(self):
+        self.assertEqual(validate_addr_spec('"abc!#$%&\'*+-/=?^_`{|}~(),.:;<>@[]"@example.com'), 'ok')
+        
 
